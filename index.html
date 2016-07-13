@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>焦点图</title>
+	<style type="text/css">
+		*{
+			margin:0;
+			padding:0;
+		}
+		html{
+			line-height: 1;
+			font-family: 'Mircro soft yahei',sans-serif;
+		}
+		ul,ol{
+			list-style: none;
+		}
+		a{
+			text-decoration: none;
+		}
+		.container{
+			width:100%;
+			overflow: hidden;
+			/*margin:0 auto;*/
+		}
+		.list {
+			position: relative;
+			left: 50%;
+			width: 1920px;
+			height: 512px;
+			margin-left: -960px;
+		}
+		.list ul{
+			position:relative;
+		}
+		.list ul li{
+			position:absolute;
+			/*visibility: hidden;*/
+			transition: all 1s;
+		}
+		/*.list ul li.on{
+			visibility: visible;
+		}*/
+		.list li img{
+			border:0;
+			width:1920px;
+			height:512px;
+		}
+		.list:hover .icon-leftBtn,.list:hover .icon-rightBtn{
+			opacity: 1;
+		}
+        .list .icon-leftBtn, .list .icon-rightBtn {
+			position: absolute;
+			top: 50%;
+			margin-top: -32px;
+			color: #fff;
+			font-size: 30px;
+			background: rgba(242, 232, 232, 0.28);
+			width: 50px;
+			height: 50px;
+			border-radius: 100%;
+			text-align: center;
+			line-height: 50px;
+			opacity: 0;
+		}
+		.list .icon-leftBtn:hover, .list .icon-rightBtn:hover{
+			background: rgba(242, 232, 232, 0.68);
+		}
+		.list .icon-leftBtn {
+			left: 50%;
+			margin-left: -502px;
+		}
+       
+		.list .icon-rightBtn {
+			left: 50%;
+			margin-left: 438px;
+		}
+		.list ol {
+			position: absolute;
+			left: 50%;
+			width: 160px;
+			height: 20px;
+			padding-top: 8px;
+			margin-left: -61px;
+			bottom: 10px;
+			border-radius: 15px;
+		}
+		.list ol li {
+			float: left;
+			width: 12px;
+			height: 12px;
+			margin: 0 0 0 10px;
+			background-color: #fff;
+			border-radius: 50%;
+			opacity: .8;
+		}
+		.list ol  li.ban-current, .list ol li:hover {
+			background: #f62648;
+			cursor: pointer;
+		}
+					
+		
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="list">
+			<ul>
+				<li>
+					<a href="#"><img src="images/01.jpg" /></a>
+				</li>
+				<li>
+					<a href="#"><img src="images/02.jpg" /></a>
+				</li>
+				<li>
+					<a href="#"><img src="images/03.jpg" /></a>
+				</li>
+				<li>
+					<a href="#"><img src="images/04.jpg" /></a>
+				</li>
+				<li>
+					<a href="#"><img src="images/05.jpg" /></a>
+				</li>
+			</ul>
+			<ol class="olsize">
+			</ol>
+			<a href="javascript:;" class="icon-leftBtn"> 
+			  &lt;
+			</a>
+			<a href="javascript:;" class="icon-rightBtn">
+				&gt;
+			</a>
+		</div>
+		<!-- <input type="hidden" id="listSize" value="5"> -->
+
+	</div>
+</body>
+</html>
+
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript">
+  
+	 $(function(){
+	  var count =$(".list ul li").length;
+	  var n = 0;
+	  var timer;
+      $('.list ul li:first-child').show().siblings().hide();
+      if(count >1){
+      	$('.olsize li:first-child').addClass('ban-current');
+      }
+
+       
+	  function anim(){
+	  	$(".list ul li").eq(n).fadeIn().siblings().fadeOut();
+	  	$(".olsize li").eq(n).addClass('ban-current').siblings().removeClass('ban-current');
+	  	console.log(n);
+	  };
+
+
+	  for(var i =0;i<=count;i++){
+	  	if(i>0){
+	  		$('.olsize').append('<li class=""></li>');
+	  	}
+	  }
+	  
+	  //圆点点击事件
+	  $('.olsize li').on('click',function(){
+	  	n = $(this).index();
+	  	anim();
+	  });
+
+	  $(".icon-leftBtn").on('click',function(){
+	  	if(n == 0){
+	  		n =count-1;
+	  		anim();
+	  	}
+	  	else{
+	  		n--;
+	  		anim();
+	  	}
+	  });
+	  $(".icon-rightBtn").on('click',function(){
+	  	if(n<count-1){
+	  		n ++;
+	  		anim();
+	  	}
+	  	else{
+	  		n = 0;
+	  		anim();
+	  	}
+	  });
+
+	  window.onload = function(){
+	  	anim();
+
+	  	function autoplay(){
+	  	if(n<count-1 && n>0){
+	  		
+	  		n++;
+	  		anim()
+	  		// console.log(n);
+	  	}
+	  	else{
+	  		n = 0;
+	  		anim()
+	  	}
+	  }
+      
+       function play() {
+            timer = setTimeout(function () {
+               $(".icon-rightBtn").trigger('click');
+                    play();
+                }, 3000);
+            }
+       function stop() {
+                clearTimeout(timer);
+            }
+	  $('.list').mouseout(function(){
+	  	play();
+	  	// console.log("鼠标离开");
+	  });
+	  $('.list').mouseover(function(){
+	  	clearInterval(timer);
+	  	// console.log("鼠标进入");
+	  });
+        play();
+	  }
+
+	 });
+	 
+               
+	
+</script>
